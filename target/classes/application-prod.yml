@@ -1,0 +1,8 @@
+logging:
+  level:
+    root:        WARN
+    com.aiguruz: INFO
+spring:
+  data:
+    mongodb:
+      uri: ${MONGO_URI}   # from AWS Secrets Manager / ECS env

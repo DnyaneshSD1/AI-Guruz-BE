@@ -1,0 +1,4 @@
+logging:
+  level:
+    com.aiguruz: DEBUG
+    org.springframework.data.mongodb.core: DEBUG

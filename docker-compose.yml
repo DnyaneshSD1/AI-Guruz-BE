@@ -1,0 +1,29 @@
+version: "3.9"
+services:
+  mongo:
+    image: mongo:7
+    container_name: aiguruz-mongo
+    ports: ["27017:27017"]
+    volumes: [mongo_data:/data/db]
+    environment:
+      MONGO_INITDB_DATABASE: aiguruz
+
+  backend:
+    build: .
+    container_name: aiguruz-backend
+    ports: ["8080:8080"]
+    depends_on: [mongo]
+    volumes: ["./logs:/app/logs"]
+    environment:
+      SPRING_PROFILES_ACTIVE:  dev
+      MONGO_URI:               mongodb://mongo:27017/aiguruz
+      JWT_SECRET:              local-dev-secret-min-32-chars!!
+      ANTHROPIC_API_KEY:       ${ANTHROPIC_API_KEY}
+      AWS_REGION:              ap-south-1
+      AWS_ACCESS_KEY_ID:       ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY:   ${AWS_SECRET_ACCESS_KEY}
+      S3_BUCKET:               aiguruz-documents
+      CORS_ORIGINS:            http://localhost:3000
+
+volumes:
+  mongo_data:

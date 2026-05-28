@@ -1,0 +1,64 @@
+spring:
+  application:
+    name: aiguruz-backend
+  data:
+    mongodb:
+      uri: ${MONGO_URI:mongodb://localhost:27017/aiguruz}
+      database: aiguruz
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 55MB
+
+server:
+  port: 8080
+  error:
+    include-message: always
+    include-binding-errors: always
+
+aws:
+  region: ${AWS_REGION:ap-south-1}
+  s3:
+    bucket: ${S3_BUCKET:aiguruz-documents}
+    presign-expiry-minutes: 15
+  textract:
+    sns-topic-arn: ${TEXTRACT_SNS_ARN:}
+    role-arn:      ${TEXTRACT_ROLE_ARN:}
+  sqs:
+    textract-queue-url: ${SQS_TEXTRACT_URL:}
+  ses:
+    from-email: ${SES_FROM_EMAIL:noreply@aiguruz.com}
+
+anthropic:
+  api-key:    ${ANTHROPIC_API_KEY:}
+  model:      claude-sonnet-4-20250514
+  max-tokens: 2000
+
+jwt:
+  secret:              ${JWT_SECRET:aiguruz-local-secret-min-32-chars!!}
+  access-expiry-hours: 24
+  refresh-expiry-days: 7
+
+cors:
+  allowed-origins: ${CORS_ORIGINS:http://localhost:3000}
+
+logging:
+  level:
+    root:                    WARN
+    com.aiguruz:             DEBUG
+    org.springframework.security: INFO
+    software.amazon.awssdk: WARN
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+    file:    "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+  file:
+    name: logs/aiguruz.log
+    max-size: 10MB
+    max-history: 30
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operationsSorter: method
